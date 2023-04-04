@@ -23,4 +23,10 @@ public class CircleTest {
         assertEquals(Math.PI * 8, c.getParameter(), 0.001);
     }
 
+    @Test
+    public void testRadiusExists() {
+        Circle c = new Circle();
+        assertNotNull(c.radius);
+    }
+
 }
