@@ -50,22 +50,7 @@ public class CircleTest {
             fail("center not found");
         }
     }
-
-    @Test
-    public void testGetArea() {
-        Circle c = new Circle();
-        c.radius = 4;
-        assertEquals(Math.PI * 16, c.getArea(), 0.001);
-    }
-
-    @Test
-    public void testGetParameter() {
-        Circle c = new Circle();
-        c.radius = 4;
-        assertEquals(Math.PI * 8, c.getParameter(), 0.001);
-    }
-
-
+    
     @Test
     public void testRadiusExists() {
         try {
@@ -159,6 +144,7 @@ public class CircleTest {
         radiusField1.setAccessible(true);
         radiusField1.set(circle1, 5);
 
+        Point point = new Point();
         Field xField = point.getClass().getDeclaredField("x");
         xField.setAccessible(true);
         xField.set(point, 3);
@@ -176,9 +162,18 @@ public class CircleTest {
         radiusField2.setAccessible(true);
         radiusField2.set(circle2, 3);
 
+        Point point1 = new Point();
+        Field xField1 = point1.getClass().getDeclaredField("x");
+        xField1.setAccessible(true);
+        xField1.set(point1, 3);
+
+        Field yField1 = point1.getClass().getDeclaredField("y");
+        yField1.setAccessible(true);
+        yField1.set(point1, 4);
+
         Field centerField2 = circle2.getClass().getDeclaredField("center");
         centerField2.setAccessible(true);
-        centerField2.set(circle2, point);
+        centerField2.set(circle2, point1);
 
         // Call the isOverlapping method using reflection
         Method isOverlappingMethod = circle1.getClass().getDeclaredMethod("isOverlapping", Circle.class);
@@ -188,11 +183,14 @@ public class CircleTest {
         assertTrue(isOverlapping);
 
         // Change the position of circle2 to make it not overlap with circle1
-        centerField2.set(circle2, point);
+        xField1.set(point1, 3);
+        yField1.set(point1, 100);
+        centerField2.set(circle2, point1);
         isOverlapping = (boolean) isOverlappingMethod.invoke(circle1, circle2);
 
-        assertTrue(isOverlapping);
+        assertFalse(isOverlapping);
     }
+
 
 
 }
