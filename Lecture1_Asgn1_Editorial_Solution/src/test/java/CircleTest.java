@@ -149,42 +149,50 @@ public class CircleTest {
         // Verify the result
         assertEquals(31.41592653589793, parameter, 0.00001);
     }
-//    @Test
-//    void isOverlappingTest() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-//        Circle circle1 = new Circle();
-//        Circle circle2 = new Circle();
-//
-//        // Set the radius and center of circle1 using reflection
-//        Field radiusField1 = circle1.getClass().getDeclaredField("radius");
-//        radiusField1.setAccessible(true);
-//        radiusField1.set(circle1, 5);
-//
-//        Field centerField1 = circle1.getClass().getDeclaredField("center");
-//        centerField1.setAccessible(true);
-//        centerField1.set(point, 3);
-//
-//        // Set the radius and center of circle2 using reflection
-//        Field radiusField2 = circle2.getClass().getDeclaredField("radius");
-//        radiusField2.setAccessible(true);
-//        radiusField2.set(circle2, 3);
-//
-//        Field centerField2 = circle2.getClass().getDeclaredField("center");
-//        centerField2.setAccessible(true);
-//        centerField2.set(point, 4);
-//
-//        // Call the isOverlapping method using reflection
-//        Method isOverlappingMethod = circle1.getClass().getDeclaredMethod("isOverlapping", Circle.class);
-//        isOverlappingMethod.setAccessible(true);
-//        boolean isOverlapping = (boolean) isOverlappingMethod.invoke(circle1, circle2);
-//
-//        assertTrue(isOverlapping);
-//
-//        // Change the position of circle2 to make it not overlap with circle1
-//        centerField2.set(point, 8);
-//        isOverlapping = (boolean) isOverlappingMethod.invoke(circle1, circle2);
-//
-//        assertFalse(isOverlapping);
-//    }
+    @Test
+    void isOverlappingTest() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        Circle circle1 = new Circle();
+        Circle circle2 = new Circle();
+
+        // Set the radius and center of circle1 using reflection
+        Field radiusField1 = circle1.getClass().getDeclaredField("radius");
+        radiusField1.setAccessible(true);
+        radiusField1.set(circle1, 5);
+
+        Field xField = point.getClass().getDeclaredField("x");
+        xField.setAccessible(true);
+        xField.set(point, 3);
+
+        Field yField = point.getClass().getDeclaredField("y");
+        yField.setAccessible(true);
+        yField.set(point, 4);
+
+        Field centerField1 = circle1.getClass().getDeclaredField("center");
+        centerField1.setAccessible(true);
+        centerField1.set(circle1, point);
+
+        // Set the radius and center of circle2 using reflection
+        Field radiusField2 = circle2.getClass().getDeclaredField("radius");
+        radiusField2.setAccessible(true);
+        radiusField2.set(circle2, 3);
+
+        Field centerField2 = circle2.getClass().getDeclaredField("center");
+        centerField2.setAccessible(true);
+        centerField2.set(circle2, point);
+
+        // Call the isOverlapping method using reflection
+        Method isOverlappingMethod = circle1.getClass().getDeclaredMethod("isOverlapping", Circle.class);
+        isOverlappingMethod.setAccessible(true);
+        boolean isOverlapping = (boolean) isOverlappingMethod.invoke(circle1, circle2);
+
+        assertTrue(isOverlapping);
+
+        // Change the position of circle2 to make it not overlap with circle1
+        centerField2.set(circle2, point);
+        isOverlapping = (boolean) isOverlappingMethod.invoke(circle1, circle2);
+
+        assertTrue(isOverlapping);
+    }
 
 
 }
